@@ -10,10 +10,7 @@ app.get('/task2B', (req, res) => {
       username[2] = firstLetter(username[2]);
       username[1] = firstLetter(username[1]);
       var shortname = `${username[3]} ${username[1]} ${username[2]}`;
-  res.json({
-  	fullname: req.query.fullname,
-  	shortname,
-  });
+  res.send(shortname);
 });
 
 app.get('/task2A', (req, res) => {
@@ -26,10 +23,17 @@ app.listen(3000, () => {
 });
 
 const names = [
-    'test test test',
-    'Test2 test2 test2',
-    'test3 Test3 test3',
-    'test4 test4 Test4'
+     'Vladimir/Vladimirovich/Putin',
+	  'Tinna Gunnlaugsdottir',
+	  'Steave Jobes',
+	  'Steave Paul Jobes',
+	  'Василий Иванович Чапаев',
+	  'Vladimir27 Vladimirovich Putin',
+	  'Vladimir V. Putin',
+	  'иГоРь аЛексАндРовиЧ сУвороВ',
+	  'Ваня Грозный',
+	  'Billy',
+	  'Сто сорок четыре абизяны'
 ];
 
 
@@ -47,10 +51,12 @@ function firstLetter(badName) {
 
 names.forEach((fullName) => {
 	const username = canonize(fullName);
-      username[1] = registerCheck(username[1]);
+      username[3] = registerCheck(username[3]);
       username[2] = firstLetter(username[2]);
-      username[3] = firstLetter(username[3]);
+      username[1] = firstLetter(username[1]);
 
-	console.log(username[1] + ' ' + username[2] + ' ' + username[3]);
+	console.log(username[3] + ' ' + username[1] + ' ' + username[2]);
+	//console.log(username);
+	//console.log(username);
 })
 
