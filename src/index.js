@@ -105,7 +105,7 @@ names.forEach((fullName) => {
 
     if (username[4] == undefined && username[1] != undefined && username[2] != undefined && username[3] != undefined) {
       	shortname =  username[1] + ' ' + username[3] + ' ' + username[2];
-    	shortname = shortname.replace(/  /, ' ');
+    	shortname = shortname.replace(/\s+/, ' ');
     } else {
     	shortname = 'Invalid fullname';
     }
