@@ -6,10 +6,31 @@ const app = express();
 app.use(cors());
 app.get('/task2B', (req, res) => {
   const username = canonize(req.query.fullname);
-      username[3] = registerCheck(username[3]);
-      username[2] = firstLetter(username[2]);
-      username[1] = firstLetter(username[1]);
-      var shortname = `${username[3]} ${username[1]} ${username[2]}`;
+  var shortname;
+	if (username[1] == undefined) {
+			if (username[2] == undefined) {
+				username[1] = registerCheck(username[3]);
+	  			username[2] = '';
+	  			username[3] = '';
+	  		} else {
+	  			username[1] = registerCheck(username[2]);
+	  			username[2] = '';
+	  			username[3] = firstLetter(username[3]);
+	  		}
+
+		} else {
+			username[1] = registerCheck(username[1]);
+	  		username[2] = firstLetter(username[2]);
+	  		username[3] = firstLetter(username[3]);
+		}
+
+    if (username[4] == undefined && username[1] != undefined && username[2] != undefined && username[3] != undefined && req.query.fullname != '') {
+      	shortname = `${username[1]} ${username[3]} ${username[2]}`;
+    	shortname = shortname.replace(/\s+/, ' ').trim();
+    } else {
+    	shortname = 'Invalid fullname';
+    }
+      
   res.send(shortname);
 });
 
@@ -24,39 +45,70 @@ app.listen(3000, () => {
 
 const names = [
      'Vladimir/Vladimirovich/Putin',
-	  'Tinna Gunnlaugsdottir',
+	  'Tinna Gunnlaugsdóttir',
 	  'Steave Jobes',
 	  'Steave Paul Jobes',
 	  'Василий Иванович Чапаев',
-	  'Vladimir27 Vladimirovich Putin',
+	  'Vladimir27  Vladimirovich Putin',
 	  'Vladimir V. Putin',
 	  'иГоРь аЛексАндРовиЧ сУвороВ',
 	  'Ваня Грозный',
 	  'Billy',
-	  'Сто сорок четыре абизяны'
+	  'Сто сорок четыре абизяны',
+	  '2pac',
+	  'Steave_Jobes'
 ];
 
 
 function registerCheck(badName) {
-  const normalName = badName.charAt(0).toUpperCase() + badName.slice(1).toLowerCase();
+  const re = /\d|\_|\//g;
+  var normalName, validate;
+  validate = re.test(badName);
+  if (!validate) {
+  	normalName = badName.charAt(0).toUpperCase() + badName.slice(1).toLowerCase();
+  }
 
   return normalName;
 }
 
 function firstLetter(badName) {
-  const normalName = badName.charAt(0).toUpperCase() + '.';
+  const re = /\d|\_|\//g;
+  var normalName, validate;
+  validate = re.test(badName);
+  if (!validate) {
+  	normalName = badName.charAt(0).toUpperCase() + '.';
+  }
 
   return normalName;
 }
 
 names.forEach((fullName) => {
 	const username = canonize(fullName);
-      username[3] = registerCheck(username[3]);
-      username[2] = firstLetter(username[2]);
-      username[1] = firstLetter(username[1]);
+	var shortname;
 
-	console.log(username[3] + ' ' + username[1] + ' ' + username[2]);
-	//console.log(username);
-	//console.log(username);
+		if (username[1] == undefined) {
+			if (username[2] == undefined) {
+				username[1] = registerCheck(username[3]);
+	  			username[2] = '';
+	  			username[3] = '';
+	  		} else {
+	  			username[1] = registerCheck(username[2]);
+	  			username[2] = '';
+	  			username[3] = firstLetter(username[3]);
+	  		}
+
+		} else {
+			username[1] = registerCheck(username[1]);
+	  		username[2] = firstLetter(username[2]);
+	  		username[3] = firstLetter(username[3]);
+		}
+
+    if (username[4] == undefined && username[1] != undefined && username[2] != undefined && username[3] != undefined) {
+      	shortname =  username[1] + ' ' + username[3] + ' ' + username[2];
+    	shortname = shortname.replace(/  /, ' ');
+    } else {
+    	shortname = 'Invalid fullname';
+    }
+
+	console.log(shortname);
 })
-
